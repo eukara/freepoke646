@@ -26,4 +26,5 @@ w_shotgun.qc
 w_xs.qc
 weapons.qc
 ../../../valve/src/shared/weapon_common.qc
+input.qc
 #endlist

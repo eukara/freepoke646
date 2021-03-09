@@ -15,9 +15,10 @@
 
 ../../../src/gs-entbase/server.src
 ../../../src/gs-entbase/shared.src
-../shared/include.src
 
 ../../../valve/src/server/defs.h
+
+../shared/include.src
 
 ../../../valve/src/server/monster_apache.qc
 ../../../valve/src/server/monster_alien_controller.qc
@@ -81,7 +82,6 @@ gamerules_multiplayer.qc
 ../../../valve/src/server/flashlight.qc
 ../../../base/src/server/modelevent.qc
 
-input.qc
 ../../../valve/src/server/spawn.qc
 
 ../../../src/server/include.src
