@@ -72,12 +72,12 @@ w_nailgun_primary(void)
 		if (other.takedamage == DAMAGE_YES) {
 			Damage_Apply(other, self.owner, 15, WEAPON_NAILGUN, DMG_GENERIC);
 			if (random() < 0.5) {
-				Weapons_PlaySound(self, CHAN_WEAPON, "weapons/brad_hit1.wav", 1, ATTN_NORM);
+				sound(self, CHAN_WEAPON, "weapons/brad_hit1.wav", 1, ATTN_NORM);
 			} else {
-				Weapons_PlaySound(self, CHAN_WEAPON, "weapons/brad_hit2.wav", 1, ATTN_NORM);
+				sound(self, CHAN_WEAPON, "weapons/brad_hit2.wav", 1, ATTN_NORM);
 			}
 		} else {
-			Weapons_PlaySound(self, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1, ATTN_NORM);
+			sound(self, CHAN_WEAPON, "weapons/xbow_hit1.wav", 1, ATTN_NORM);
 		}
 		remove(self);
 	}
@@ -96,11 +96,11 @@ w_nailgun_primary(void)
 	setsize(nail, [0,0,0], [0,0,0]);
 
 	if (self.flags & FL_CROUCHING)
-		Animation_PlayerTopTemp(ANIM_SHOOT1HAND, 0.45f);
+		Animation_PlayerTop(pl, ANIM_SHOOT1HAND, 0.45f);
 	else
-		Animation_PlayerTopTemp(ANIM_CR_SHOOT1HAND, 0.45f);
+		Animation_PlayerTop(pl, ANIM_CR_SHOOT1HAND, 0.45f);
 
-	Weapons_PlaySound(pl, CHAN_WEAPON, "weapons/nailgun.wav", 1, ATTN_NORM);
+	sound(pl, CHAN_WEAPON, "weapons/nailgun.wav", 1, ATTN_NORM);
 
 #else
 

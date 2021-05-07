@@ -124,7 +124,7 @@ void w_shotgun_primary(void)
 	} else {
 		TraceAttack_FireBullets(4, pl.origin + pl.view_ofs, 5, [0.08716,0.04362], WEAPON_SHOTGUN);
 	}
-	Weapons_PlaySound(pl, CHAN_WEAPON, "weapons/dbarrel1.wav", 1, ATTN_NORM);
+	sound(pl, CHAN_WEAPON, "weapons/dbarrel1.wav", 1, ATTN_NORM);
 	pl.shotgun_mag--;
 	Weapons_UpdateAmmo(pl, pl.shotgun_mag, pl.ammo_buckshot, __NULL__);
 #else
