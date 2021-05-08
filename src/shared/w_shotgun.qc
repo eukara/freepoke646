@@ -34,7 +34,8 @@ enum
 	SHOTTY_RELOAD_END
 };
 
-void w_shotgun_precache(void)
+void
+w_shotgun_precache(void)
 {
 	precache_model("models/v_shotgun.mdl");
 	precache_model("models/w_shotgun.mdl");
@@ -44,26 +45,35 @@ void w_shotgun_precache(void)
 	precache_sound("weapons/reload3.wav");
 	precache_sound("weapons/scock1.wav");
 }
-void w_shotgun_updateammo(player pl)
+
+void
+w_shotgun_updateammo(player pl)
 {
 #ifdef SERVER
 	Weapons_UpdateAmmo(pl, pl.shotgun_mag, pl.ammo_buckshot, __NULL__);
 #endif
 }
-string w_shotgun_wmodel(void)
+
+string
+w_shotgun_wmodel(void)
 {
 	return "models/w_shotgun.mdl";
 }
-string w_shotgun_pmodel(void)
+
+string
+w_shotgun_pmodel(void)
 {
 	return "models/p_shotgun.mdl";
 }
-string w_shotgun_deathmsg(void)
+
+string
+w_shotgun_deathmsg(void)
 {
 	return "";
 }
 
-int w_shotgun_pickup(int new, int startammo)
+int
+w_shotgun_pickup(int new, int startammo)
 {
 #ifdef SERVER
 	player pl = (player)self;
@@ -81,7 +91,8 @@ int w_shotgun_pickup(int new, int startammo)
 	return TRUE;
 }
 
-void w_shotgun_draw(void)
+void
+w_shotgun_draw(void)
 {
 	Weapons_SetModel("models/v_shotgun.mdl");
 	Weapons_ViewAnimation(SHOTGUN_DRAW);
@@ -91,11 +102,14 @@ void w_shotgun_draw(void)
 #endif
 }
 
-void w_shotgun_holster(void)
+void
+w_shotgun_holster(void)
 {
 	Weapons_ViewAnimation(SHOTGUN_HOLSTER);
 }
-void w_shotgun_primary(void)
+
+void
+w_shotgun_primary(void)
 {
 	player pl = (player)self;
 	if (pl.w_attack_next) {
@@ -137,7 +151,9 @@ void w_shotgun_primary(void)
 	pl.w_attack_next = 1.1f;
 	pl.w_idle_next = 2.5f;
 }
-void w_shotgun_reload(void)
+
+void
+w_shotgun_reload(void)
 {
 	player pl = (player)self;
 #ifdef CLIENT
@@ -162,7 +178,9 @@ void w_shotgun_reload(void)
 	pl.a_ammo3 = SHOTTY_RELOAD_START;
 	pl.w_idle_next = 0.0f;
 }
-void w_shotgun_release(void)
+
+void
+w_shotgun_release(void)
 {
 	player pl = (player)self;
 
@@ -221,7 +239,9 @@ void w_shotgun_release(void)
 		pl.w_attack_next = 0.5f;
 	}
 }
-void w_shotgun_crosshair(void)
+
+void
+w_shotgun_crosshair(void)
 {
 #ifdef CLIENT
 	static vector cross_pos;
@@ -234,12 +254,14 @@ void w_shotgun_crosshair(void)
 #endif
 }
 
-float w_shotgun_aimanim(void)
+float
+w_shotgun_aimanim(void)
 {
 	return self.flags & FL_CROUCHING ? ANIM_CR_AIMSHOTGUN : ANIM_AIMSHOTGUN;
 }
 
-void w_shotgun_hudpic(int s, vector pos, float a)
+void
+w_shotgun_hudpic(int s, vector pos, float a)
 {
 #ifdef CLIENT
 	if (s) {
@@ -274,7 +296,9 @@ weapon_t w_shotgun =
 };
 
 #ifdef SERVER
-void weapon_shotgun(void) {
+void
+weapon_shotgun(void)
+{
 	Weapons_InitItem(WEAPON_SHOTGUN);
 }
 #endif

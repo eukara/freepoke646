@@ -21,7 +21,8 @@ class item_ammo:CBaseEntity
 	virtual void(void) touch;
 };
 
-void item_ammo::touch(void)
+void
+item_ammo::touch(void)
 {
 	if not (other.flags & FL_CLIENT) {
 		return;
@@ -41,7 +42,8 @@ void item_ammo::touch(void)
 	}
 }
 
-void item_ammo::Respawn(void)
+void
+item_ammo::Respawn(void)
 {
 	solid = SOLID_TRIGGER;
 	movetype = MOVETYPE_TOSS;
@@ -59,7 +61,8 @@ void item_ammo::Respawn(void)
 	droptofloor();
 }
 
-void item_ammo::item_ammo(void)
+void
+item_ammo::item_ammo(void)
 {
 	m_oldModel = model;
 	SetModel(m_oldModel);
@@ -71,13 +74,13 @@ void item_ammo::item_ammo(void)
  * A single ammo_bolts will provide 5 bolts.
  */
 
-class 
+class
 ammo_bolts:item_ammo
 {
 	void(void) ammo_bolts;
 };
 
-void 
+void
 ammo_bolts::ammo_bolts(void)
 {
 	model = "models/w_crossbow_clip.mdl";
@@ -97,12 +100,14 @@ class ammo_nailclip:item_ammo
 	virtual void(void) touch;
 };
 
-void ammo_nailclip::ammo_nailclip(void)
+void
+ammo_nailclip::ammo_nailclip(void)
 {
 	model = "models/w_nailclip.mdl";
 	item_ammo::item_ammo();
 }
-void ammo_nailclip::touch(void)
+void
+ammo_nailclip::touch(void)
 {
 	if not (other.flags & FL_CLIENT) {
 		return;
@@ -130,7 +135,8 @@ class ammo_nailround:item_ammo
 	virtual void(void) touch;
 };
 
-void ammo_nailround::ammo_nailround(void)
+void
+ammo_nailround::ammo_nailround(void)
 {
 	model = "models/w_nailround.mdl";
 	item_ammo::item_ammo();
@@ -164,12 +170,15 @@ class ammo_xencandy:item_ammo
 	virtual void(void) touch;
 };
 
-void ammo_xencandy::ammo_xencandy(void)
+void
+ammo_xencandy::ammo_xencandy(void)
 {
 	model = "models/w_xencandy.mdl";
 	item_ammo::item_ammo();
 }
-void ammo_xencandy::touch(void)
+
+void
+ammo_xencandy::touch(void)
 {
 	if not (other.flags & FL_CLIENT) {
 		return;
