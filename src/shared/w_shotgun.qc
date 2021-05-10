@@ -84,11 +84,11 @@ w_shotgun_pickup(int new, int startammo)
 		if (pl.ammo_buckshot < 125) {
 			pl.ammo_buckshot = bound(0, pl.ammo_buckshot + 8, 125);
 		} else {
-			return FALSE;
+			return (0);
 		}
 	}
 #endif
-	return TRUE;
+	return (1);
 }
 
 void

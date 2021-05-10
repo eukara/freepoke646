@@ -69,7 +69,7 @@ int
 w_bradnailer_pickup(int new, int startammo)
 {
 /* TODO */
-	return TRUE;
+	return (1);
 }
 
 void

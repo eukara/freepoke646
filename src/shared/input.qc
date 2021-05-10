@@ -18,15 +18,20 @@ void
 Game_Input(void)
 {
 #ifdef SERVER
-	if (input_buttons & INPUT_BUTTON5) {
-		Player_UseDown(); 
-	} else {
-		Player_UseUp();
+	CGameRules rules = (CGameRules)g_grMode;
+
+	if (rules.m_iIntermission) {
+		rules.IntermissionEnd();
+		return;
 	}
 
-	if (self.impulse == 100) {
+	if (input_buttons & INPUT_BUTTON5)
+		Player_UseDown(); 
+	else
+		Player_UseUp();
+
+	if (self.impulse == 100)
 		Flashlight_Toggle();
-	}
 
 	if (cvar("sv_cheats") == 1) {
 		player pl = (player)self;
@@ -55,13 +60,12 @@ Game_Input(void)
 	self.impulse = 0;
 #endif
 
-	if (input_buttons & INPUT_BUTTON0) {
+	if (input_buttons & INPUT_BUTTON0)
 		Weapons_Primary();
-	} else if (input_buttons & INPUT_BUTTON4) {
+	else if (input_buttons & INPUT_BUTTON4)
 		Weapons_Reload();
-	} else if (input_buttons & INPUT_BUTTON3) {
+	else if (input_buttons & INPUT_BUTTON3)
 		Weapons_Secondary();
-	} else {
+	else
 		Weapons_Release();
-	}
 }

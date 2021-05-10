@@ -43,27 +43,28 @@ enumflags
 };
 
 noref int input_sequence;
-class player:base_player
+
+class
+player:base_player
 {
-	/* Weapon specific */
-	int bradnailer_mag; int bradnailer_mag_net;
-	int nailgun_mag; int nailgun_mag_net;
-	int shotgun_mag; int shotgun_mag_net;
-	int cmlwbr_mag; int cmlwbr_mag_net;
-	int xs_mag; int xs_mag_net;
-	int satchel_chg; int satchel_chg_net;
+	PREDICTED_INT(anim_top);
+	PREDICTED_FLOAT(anim_top_time);
+	PREDICTED_FLOAT(anim_top_delay);
+	PREDICTED_INT(anim_bottom);
+	PREDICTED_FLOAT(anim_bottom_time);
 
-	int ammo_nail; int ammo_nail_net;
-	int ammo_buckshot; int ammo_buckshot_net;
-	int ammo_bolts; int ammo_bolts_net;
-	int ammo_xencandy; int ammo_xencandy_net;
-	int ammo_satchel; int ammo_satchel_net;
+	PREDICTED_INT(bradnailer_mag);
+	PREDICTED_INT(nailgun_mag);
+	PREDICTED_INT(shotgun_mag);
+	PREDICTED_INT(cmlwbr_mag);
+	PREDICTED_INT(xs_mag);
+	PREDICTED_INT(satchel_chg);
 
-	float anim_top; float anim_top_net;
-	float anim_top_time; float anim_top_time_net;
-	float anim_top_delay; float anim_top_delay_net;
-	float anim_bottom; float anim_bottom_net;
-	float anim_bottom_time; float anim_bottom_time_net;
+	PREDICTED_INT(ammo_nail);
+	PREDICTED_INT(ammo_buckshot);
+	PREDICTED_INT(ammo_bolts);
+	PREDICTED_INT(ammo_xencandy);
+	PREDICTED_INT(ammo_satchel);
 
 #ifdef CLIENT
 	/* External model */
@@ -146,24 +147,24 @@ player::PredictPreFrame(void)
 {
 	base_player::PredictPreFrame();
 
-	bradnailer_mag_net = bradnailer_mag;
-	nailgun_mag_net = nailgun_mag;
-	shotgun_mag_net = shotgun_mag;
-	cmlwbr_mag_net = cmlwbr_mag;
-	xs_mag_net = xs_mag;
-	satchel_chg_net = satchel_chg;
+	SAVE_STATE(anim_top);
+	SAVE_STATE(anim_top_time);
+	SAVE_STATE(anim_top_delay);
+	SAVE_STATE(anim_bottom);
+	SAVE_STATE(anim_bottom_time);
 
-	ammo_nail_net = ammo_nail;
-	ammo_buckshot_net = ammo_buckshot;
-	ammo_bolts_net = ammo_bolts;
-	ammo_xencandy_net = ammo_xencandy;
-	ammo_satchel_net = ammo_satchel;
+	SAVE_STATE(bradnailer_mag);
+	SAVE_STATE(nailgun_mag);
+	SAVE_STATE(shotgun_mag);
+	SAVE_STATE(cmlwbr_mag);
+	SAVE_STATE(xs_mag);
+	SAVE_STATE(satchel_chg);
 
-	anim_top_net = anim_top;
-	anim_top_delay_net = anim_top_delay;
-	anim_top_time_net = anim_top_time;
-	anim_bottom_net = anim_bottom;
-	anim_bottom_time_net = anim_bottom_time;
+	SAVE_STATE(ammo_nail);
+	SAVE_STATE(ammo_buckshot);
+	SAVE_STATE(ammo_bolts);
+	SAVE_STATE(ammo_xencandy);
+	SAVE_STATE(ammo_satchel);
 }
 
 /*
@@ -178,24 +179,24 @@ player::PredictPostFrame(void)
 {
 	base_player::PredictPostFrame();
 
-	bradnailer_mag = bradnailer_mag_net;
-	nailgun_mag = nailgun_mag_net;
-	shotgun_mag = shotgun_mag_net;
-	cmlwbr_mag = cmlwbr_mag_net;
-	xs_mag = xs_mag_net;
-	satchel_chg = satchel_chg_net;
+	ROLL_BACK(anim_top);
+	ROLL_BACK(anim_top_time);
+	ROLL_BACK(anim_top_delay);
+	ROLL_BACK(anim_bottom);
+	ROLL_BACK(anim_bottom_time);
 
-	ammo_nail = ammo_nail_net;
-	ammo_buckshot = ammo_buckshot_net;
-	ammo_bolts = ammo_bolts_net;
-	ammo_xencandy = ammo_xencandy_net;
-	ammo_satchel = ammo_satchel_net;
+	ROLL_BACK(bradnailer_mag);
+	ROLL_BACK(nailgun_mag);
+	ROLL_BACK(shotgun_mag);
+	ROLL_BACK(cmlwbr_mag);
+	ROLL_BACK(xs_mag);
+	ROLL_BACK(satchel_chg);
 
-	anim_top = anim_top_net;
-	anim_top_delay = anim_top_delay_net;
-	anim_top_time = anim_top_time_net;
-	anim_bottom = anim_bottom_net;
-	anim_bottom_time = anim_bottom_time_net;
+	ROLL_BACK(ammo_nail);
+	ROLL_BACK(ammo_buckshot);
+	ROLL_BACK(ammo_bolts);
+	ROLL_BACK(ammo_xencandy);
+	ROLL_BACK(ammo_satchel);
 }
 
 #else
@@ -205,53 +206,53 @@ player::EvaluateEntity(void)
 	base_player::EvaluateEntity();
 
 	/* animation */
-	if (anim_bottom_net != anim_bottom || anim_bottom_time != anim_bottom_time_net)
+	if (ATTR_CHANGED(anim_bottom) || ATTR_CHANGED(anim_bottom_time))
 		SendFlags |= PLAYER_BOTTOMFRAME;
-	if (anim_top_net != anim_top || anim_top_time != anim_top_time_net || anim_top_delay != anim_top_delay_net)
+	if (ATTR_CHANGED(anim_top) || ATTR_CHANGED(anim_top_time) || ATTR_CHANGED(anim_top_delay))
 		SendFlags |= PLAYER_TOPFRAME;
 
-	anim_top_net = anim_top;
-	anim_top_delay_net = anim_top_delay;
-	anim_top_time_net = anim_top_time;
-	anim_bottom_net = anim_bottom;
-	anim_bottom_time_net = anim_bottom_time;
-
-	if (bradnailer_mag_net != bradnailer_mag)
+	if (ATTR_CHANGED(bradnailer_mag))
 		SendFlags |= PLAYER_AMMO1;
-	if (nailgun_mag_net != nailgun_mag)
+	if (ATTR_CHANGED(nailgun_mag))
 		SendFlags |= PLAYER_AMMO1;
-	if (shotgun_mag_net != shotgun_mag)
+	if (ATTR_CHANGED(shotgun_mag))
 		SendFlags |= PLAYER_AMMO1;
-	if (cmlwbr_mag_net != cmlwbr_mag)
+	if (ATTR_CHANGED(cmlwbr_mag))
 		SendFlags |= PLAYER_AMMO1;
-	if (xs_mag_net != xs_mag)
+	if (ATTR_CHANGED(xs_mag))
 		SendFlags |= PLAYER_AMMO1;
-	if (satchel_chg_net != satchel_chg)
+	if (ATTR_CHANGED(satchel_chg))
 		SendFlags |= PLAYER_AMMO1;
 
-	if (ammo_nail_net != ammo_nail)
+	if (ATTR_CHANGED(ammo_nail))
 		SendFlags |= PLAYER_AMMO2;
-	if (ammo_buckshot_net != ammo_buckshot)
+	if (ATTR_CHANGED(ammo_buckshot))
 		SendFlags |= PLAYER_AMMO2;
-	if (ammo_bolts_net != ammo_bolts)
+	if (ATTR_CHANGED(ammo_bolts))
 		SendFlags |= PLAYER_AMMO2;
-	if (ammo_xencandy_net != ammo_xencandy)
+	if (ATTR_CHANGED(ammo_xencandy))
 		SendFlags |= PLAYER_AMMO2;
-	if (ammo_satchel_net != ammo_satchel)
+	if (ATTR_CHANGED(ammo_satchel))
 		SendFlags |= PLAYER_AMMO2;
-	
-	bradnailer_mag_net = bradnailer_mag;
-	nailgun_mag_net = nailgun_mag;
-	shotgun_mag_net = shotgun_mag;
-	cmlwbr_mag_net = cmlwbr_mag;
-	xs_mag_net = xs_mag;
-	satchel_chg_net = satchel_chg;
 
-	ammo_nail_net = ammo_nail;
-	ammo_buckshot_net = ammo_buckshot;
-	ammo_bolts_net = ammo_bolts;
-	ammo_xencandy_net = ammo_xencandy;
-	ammo_satchel_net = ammo_satchel;
+	SAVE_STATE(anim_top);
+	SAVE_STATE(anim_top_time);
+	SAVE_STATE(anim_top_delay);
+	SAVE_STATE(anim_bottom);
+	SAVE_STATE(anim_bottom_time);
+
+	SAVE_STATE(bradnailer_mag);
+	SAVE_STATE(nailgun_mag);
+	SAVE_STATE(shotgun_mag);
+	SAVE_STATE(cmlwbr_mag);
+	SAVE_STATE(xs_mag);
+	SAVE_STATE(satchel_chg);
+
+	SAVE_STATE(ammo_nail);
+	SAVE_STATE(ammo_buckshot);
+	SAVE_STATE(ammo_bolts);
+	SAVE_STATE(ammo_xencandy);
+	SAVE_STATE(ammo_satchel);
 }
 
 /*
@@ -263,11 +264,11 @@ float
 player::SendEntity(entity ePEnt, float fChanged)
 {
 	if (health <= 0 && ePEnt != this) {
-		return FALSE;
+		return (0);
 	}
 
 	if (clienttype(ePEnt) != CLIENTTYPE_REAL) {
-		return FALSE;
+		return (0);
 	}
 
 	if (ePEnt != self) {
@@ -315,6 +316,6 @@ player::SendEntity(entity ePEnt, float fChanged)
 	if (fChanged & PLAYER_AMMO3) {
 	}
 
-	return TRUE;
+	return (1);
 }
 #endif
