@@ -48,8 +48,8 @@ item_ammo::Respawn(void)
 	solid = SOLID_TRIGGER;
 	movetype = MOVETYPE_TOSS;
 
-	if (m_oldModel) {
-		SetModel(m_oldModel);
+	if (GetSpawnModel()) {
+		SetModel(GetSpawnModel());
 	}
 
 	setsize(this, [-16,-16,0], [16,16,16]);
@@ -64,8 +64,8 @@ item_ammo::Respawn(void)
 void
 item_ammo::item_ammo(void)
 {
-	m_oldModel = model;
-	SetModel(m_oldModel);
+	GetSpawnModel() = model;
+	SetModel(GetSpawnModel());
 	CBaseEntity::CBaseEntity();
 }
 
