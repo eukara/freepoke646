@@ -57,26 +57,26 @@ w_xs_wmodel(void)
 }
 
 void
-w_xs_draw(void)
+w_xs_draw(player pl)
 {
 	Weapons_SetModel("models/v_xs.mdl");
-	Weapons_ViewAnimation(XS_DRAW);
+	Weapons_ViewAnimation(pl, XS_DRAW);
 }
 
 void
-w_xs_holster(void)
+w_xs_holster(player pl)
 {
-	Weapons_ViewAnimation(XS_HOLSTER);
+	Weapons_ViewAnimation(pl, XS_HOLSTER);
 }
 
 void
-w_xs_primary(void)
+w_xs_primary(player pl)
 {
 /* TODO */
 }
 
 void
-w_xs_secondary(void)
+w_xs_secondary(player pl)
 {
 
 /* TODO Charge up, uses ammo similar to gauss */
@@ -85,13 +85,13 @@ w_xs_secondary(void)
 
 
 void
-w_xs_release(void)
+w_xs_release(player pl)
 {
 
 }
 
 void
-w_xs_hudpic(int selected, vector pos, float a)
+w_xs_hudpic(player pl, int selected, vector pos, float a)
 {
 #ifdef CLIENT
 	if (selected) {
@@ -132,7 +132,7 @@ weapon_t w_xs =
 	.secondary	= w_xs_secondary,
 	.reload		= __NULL__,
 	.release	= w_xs_release,
-	.crosshair	= __NULL__,
+	.postdraw	= __NULL__,
 	.precache	= w_xs_precache,
 	.pickup		= __NULL__,
 	.updateammo	= w_xs_updateammo,

@@ -53,32 +53,32 @@ w_heaterpipe_wmodel(void)
 }
 
 void
-w_heaterpipe_draw(void)
+w_heaterpipe_draw(player pl)
 {
 	Weapons_SetModel("models/v_heaterpipe.mdl");
-	Weapons_ViewAnimation(HPIPE_DRAW);
+	Weapons_ViewAnimation(pl, HPIPE_DRAW);
 }
 
 void
-w_heaterpipe_holster(void)
+w_heaterpipe_holster(player pl)
 {
-	Weapons_ViewAnimation(HPIPE_HOLSTER);
+	Weapons_ViewAnimation(pl, HPIPE_HOLSTER);
 }
 
 void
-w_heaterpipe_primary(void)
+w_heaterpipe_primary(player pl)
 {
 /* TODO, attack slows to crawl & player breathes */
 }
 
 void
-w_heaterpipe_release(void)
+w_heaterpipe_release(player pl)
 {
 
 }
 
 void
-w_heaterpipe_hudpic(int selected, vector pos, float a)
+w_heaterpipe_hudpic(player pl, int selected, vector pos, float a)
 {
 #ifdef CLIENT
 	if (selected) {
@@ -119,7 +119,7 @@ weapon_t w_heaterpipe =
 	.secondary	= __NULL__,
 	.reload		= __NULL__,
 	.release	= w_heaterpipe_release,
-	.crosshair	= __NULL__,
+	.postdraw	= __NULL__,
 	.precache	= w_heaterpipe_precache,
 	.pickup		= __NULL__,
 	.updateammo	= w_heaterpipe_updateammo,

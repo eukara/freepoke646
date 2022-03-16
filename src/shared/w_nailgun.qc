@@ -51,16 +51,15 @@ w_nailgun_wmodel(void)
 }
 
 void
-w_nailgun_draw(void)
+w_nailgun_draw(player pl)
 {
 	Weapons_SetModel("models/v_nailgun.mdl");
-	Weapons_ViewAnimation(NAIL_DRAW);
+	Weapons_ViewAnimation(pl, NAIL_DRAW);
 }
 
 void
-w_nailgun_primary(void)
+w_nailgun_primary(player pl)
 {
-	player pl = (player)self;
 
 	if (pl.w_attack_next > 0.0) {
 		return;
@@ -82,11 +81,11 @@ w_nailgun_primary(void)
 		remove(self);
 	}
 
-	Weapons_MakeVectors();
+	Weapons_MakeVectors(pl);
 	entity nail = spawn();
 	setmodel(nail, "models/nail.mdl");
-	setorigin(nail, Weapons_GetCameraPos() + (v_forward * 16));
-	nail.owner = self;
+	setorigin(nail, Weapons_GetCameraPos(pl) + (v_forward * 16));
+	nail.owner = pl;
 	nail.velocity = v_forward * 2000;
 	nail.movetype = MOVETYPE_FLY;
 	nail.solid = SOLID_BBOX;
@@ -95,7 +94,7 @@ w_nailgun_primary(void)
 	nail.touch = Nail_Touch;
 	setsize(nail, [0,0,0], [0,0,0]);
 
-	if (self.flags & FL_CROUCHING)
+	if (pl.flags & FL_CROUCHING)
 		Animation_PlayerTop(pl, ANIM_SHOOT1HAND, 0.45f);
 	else
 		Animation_PlayerTop(pl, ANIM_CR_SHOOT1HAND, 0.45f);
@@ -104,8 +103,8 @@ w_nailgun_primary(void)
 
 #else
 
-	Weapons_ViewPunchAngle([-2,0,0]);
-	Weapons_ViewAnimation(NAIL_SHOOT);
+	Weapons_ViewPunchAngle(pl, [-2,0,0]);
+	Weapons_ViewAnimation(pl, NAIL_SHOOT);
 
 	
 #endif
@@ -115,18 +114,17 @@ w_nailgun_primary(void)
 }
 
 void
-w_nailgun_release(void)
+w_nailgun_release(player pl)
 {
 
-	player pl = (player)self;
 	if (pl.w_idle_next > 0) {
 		return;
 	}
 
 	if (random() < 0.5) {
-				Weapons_ViewAnimation(NAIL_IDLE1);
+				Weapons_ViewAnimation(pl, NAIL_IDLE1);
 		} else {
-	Weapons_ViewAnimation(NAIL_IDLE2);
+	Weapons_ViewAnimation(pl, NAIL_IDLE2);
 		}
 	pl.w_idle_next = 10.0f;
 
@@ -134,7 +132,7 @@ w_nailgun_release(void)
 
 
 void
-w_nailgun_hudpic(int selected, vector pos, float a)
+w_nailgun_hudpic(player pl, int selected, vector pos, float a)
 {
 #ifdef CLIENT
 	if (selected) {
@@ -175,7 +173,7 @@ weapon_t w_nailgun =
 	.secondary	= __NULL__,
 	.reload		= __NULL__,
 	.release	= w_nailgun_release,
-	.crosshair	= __NULL__,
+	.postdraw	= __NULL__,
 	.precache	= w_nailgun_precache,
 	.pickup		= __NULL__,
 	.updateammo	= w_nailgun_updateammo,

@@ -15,7 +15,7 @@
  */
 
 void
-Game_Input(void)
+Game_Input(player pl)
 {
 #ifdef SERVER
 	CGameRules rules = (CGameRules)g_grMode;
@@ -34,8 +34,7 @@ Game_Input(void)
 		Flashlight_Toggle();
 
 	if (cvar("sv_cheats") == 1) {
-		player pl = (player)self;
-		if (self.impulse == 101) {
+		if (pl.impulse == 101) {
 			pl.health = 100;
 			pl.armor = 100;
 			Weapons_AddItem(pl, WEAPON_HEATERPIPE, -1);
@@ -47,7 +46,7 @@ Game_Input(void)
 			Weapons_AddItem(pl, WEAPON_SATCHEL, -1);
 		}
 
-		if (self.impulse == 102) {
+		if (pl.impulse == 102) {
 			// Respawn all the entities
 			for (entity a = world; (a = findfloat(a, ::identity, 1));) {
 				CBaseEntity caw = (CBaseEntity)a;
@@ -57,15 +56,15 @@ Game_Input(void)
 		}
 	}
 
-	self.impulse = 0;
+	pl.impulse = 0;
 #endif
 
 	if (input_buttons & INPUT_BUTTON0)
-		Weapons_Primary();
+		Weapons_Primary(pl);
 	else if (input_buttons & INPUT_BUTTON4)
-		Weapons_Reload();
+		Weapons_Reload(pl);
 	else if (input_buttons & INPUT_BUTTON3)
-		Weapons_Secondary();
+		Weapons_Secondary(pl);
 	else
-		Weapons_Release();
+		Weapons_Release(pl);
 }

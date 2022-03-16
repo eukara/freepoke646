@@ -54,7 +54,7 @@ w_pipebomb_wmodel(void)
 }
 
 string
-w_pipebomb_pmodel(void)
+w_pipebomb_pmodel(player pl)
 {
 	return "models/p_pipebomb.mdl";
 }
@@ -78,24 +78,23 @@ w_pipebomb_precache(void)
 }
 
 int
-w_pipebomb_pickup(int new, int startammo)
+w_pipebomb_pickup(player pl, int new, int startammo)
 {
-	return w_satchel_pickup(new, startammo);
+	return w_satchel_pickup(pl, new, startammo);
 }
 
 void
-w_pipebomb_draw(void)
+w_pipebomb_draw(player pl)
 {
 	Weapons_SetModel("models/v_pipebomb.mdl");
-	Weapons_ViewAnimation(SATCHEL_DRAW);
+	Weapons_ViewAnimation(pl, SATCHEL_DRAW);
 #ifdef SERVER
-	player pl = (player)self;
 	Weapons_UpdateAmmo(pl, pl.satchel_chg, pl.ammo_satchel, __NULL__);
 #endif
 }
 
 void
-w_pipebomb_holster(void)
+w_pipebomb_holster(player pl)
 {
 	
 }
@@ -142,9 +141,8 @@ s_pipebomb_detonate(entity master)
 #endif
 
 void
-w_pipebomb_primary(void)
+w_pipebomb_primary(player pl)
 {
-	player pl = (player)self;
 
 	if (pl.w_attack_next) {
 		return;
@@ -162,18 +160,18 @@ w_pipebomb_primary(void)
 #endif
 
 	if (pl.satchel_chg <= 0) {
-        Weapons_ViewAnimation(RADIO_DRAW);
+        Weapons_ViewAnimation(pl, RADIO_DRAW);
     } else {
-        Weapons_ViewAnimation(RADIO_USE);
+        Weapons_ViewAnimation(pl, RADIO_USE);
     }
 
 #ifdef SERVER
 	if (!pl.satchel_chg) {
 		vector throw;
 		
-		Weapons_MakeVectors();
+		Weapons_MakeVectors(pl);
 		throw = pl.velocity + (v_forward * 274);
-		s_pipebomb_drop(self, pl.origin, throw);
+		s_pipebomb_drop(pl, pl.origin, throw);
 		pl.satchel_chg++;
 		pl.ammo_satchel--;
 	} else {
@@ -196,9 +194,8 @@ w_pipebomb_primary(void)
 }
 
 void
-w_pipebomb_secondary(void)
+w_pipebomb_secondary(player pl)
 {
-	player pl = (player)self;
 
 	if (pl.w_attack_next) {
 		return;
@@ -217,9 +214,9 @@ w_pipebomb_secondary(void)
 
 #ifdef SERVER
 	vector throw;
-	Weapons_MakeVectors();
+	Weapons_MakeVectors(pl);
 	throw = pl.velocity + (v_forward * 274);
-	s_pipebomb_drop(self, pl.origin, throw);
+	s_pipebomb_drop(pl, pl.origin, throw);
 	pl.satchel_chg++;
 	pl.ammo_satchel--;
 	Weapons_UpdateAmmo(pl, pl.satchel_chg, pl.ammo_satchel, __NULL__);
@@ -229,38 +226,38 @@ w_pipebomb_secondary(void)
 	setmodel(pSeat->m_eViewModel, "models/v_pipebomb_watch.mdl");
 #endif
 
-	Weapons_ViewAnimation(RADIO_DRAW);
+	Weapons_ViewAnimation(pl, RADIO_DRAW);
 
 	pl.w_attack_next = 1.0f;
 	pl.w_idle_next = 2.5f;
 }
 
 void
-w_pipebomb_reload(void)
+w_pipebomb_reload(player pl)
 {
 	
 }
 
 void
-w_pipebomb_release(void)
+w_pipebomb_release(player pl)
 {
-	w_satchel_release();
+	w_satchel_release(pl);
 }
 
 float
-w_pipebomb_aimanim(void)
+w_pipebomb_aimanim(player pl)
 {
-	return w_satchel_aimanim();
+	return w_satchel_aimanim(pl);
 }
 
 void
-w_pipebomb_hud(void)
+w_pipebomb_hud(player pl)
 {
-	w_satchel_holster();
+	w_satchel_holster(pl);
 }
 
 void
-w_pipebomb_hudpic(int selected, vector pos, float a)
+w_pipebomb_hudpic(player pl, int selected, vector pos, float a)
 {
 #ifdef CLIENT
 	if (selected) {
@@ -283,7 +280,7 @@ weapon_t w_pipebomb =
 	.secondary	= w_pipebomb_secondary,
 	.reload		= __NULL__,
 	.release	= w_pipebomb_release,
-	.crosshair	= w_pipebomb_hud,
+	.postdraw	= w_pipebomb_hud,
 	.precache	= w_pipebomb_precache,
 	.pickup		= w_pipebomb_pickup,
 	.updateammo	= w_pipebomb_updateammo,

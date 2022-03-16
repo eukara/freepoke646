@@ -57,39 +57,39 @@ w_cmlwbr_wmodel(void)
 }
 
 void
-w_cmlwbr_draw(void)
+w_cmlwbr_draw(player pl)
 {
 	Weapons_SetModel("models/v_cmlwbr.mdl");
-	Weapons_ViewAnimation(CML_DRAW);
+	Weapons_ViewAnimation(pl, CML_DRAW);
 }
 
 void
-w_cmlwbr_holster(void)
+w_cmlwbr_holster(player pl)
 {
-	Weapons_ViewAnimation(CML_HOLSTER);
+	Weapons_ViewAnimation(pl, CML_HOLSTER);
 }
 
 void
-w_cmlwbr_primary(void)
+w_cmlwbr_primary(player pl)
 {
 /* TODO, attack slows to crawl & player breathes */
 }
 
 void
-w_cmlwbr_secondary(void)
+w_cmlwbr_secondary(player pl)
 {
 
 }
 
 
 void
-w_cmlwbr_release(void)
+w_cmlwbr_release(player pl)
 {
 
 }
 
 void
-w_cmlwbr_hudpic(int selected, vector pos, float a)
+w_cmlwbr_hudpic(player pl, int selected, vector pos, float a)
 {
 #ifdef CLIENT
 	if (selected) {
@@ -130,7 +130,7 @@ weapon_t w_cmlwbr =
 	.secondary	= w_cmlwbr_secondary,
 	.reload		= __NULL__,
 	.release	= w_cmlwbr_release,
-	.crosshair	= __NULL__,
+	.postdraw	= __NULL__,
 	.precache	= w_cmlwbr_precache,
 	.pickup		= __NULL__,
 	.updateammo	= w_cmlwbr_updateammo,

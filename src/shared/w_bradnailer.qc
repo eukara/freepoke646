@@ -66,30 +66,29 @@ w_bradnailer_wmodel(void)
 }
 
 int
-w_bradnailer_pickup(int new, int startammo)
+w_bradnailer_pickup(player pl, int new, int startammo)
 {
 /* TODO */
 	return (1);
 }
 
 void
-w_bradnailer_draw(void)
+w_bradnailer_draw(player pl)
 {
 	Weapons_SetModel("models/v_bradnailer.mdl");
-	Weapons_ViewAnimation(BNAIL_DRAW);
+	Weapons_ViewAnimation(pl, BNAIL_DRAW);
 }
 
 void
-w_bradnailer_holster(void)
+w_bradnailer_holster(player pl)
 {
-	Weapons_ViewAnimation(BNAIL_HOLSTER);
+	Weapons_ViewAnimation(pl, BNAIL_HOLSTER);
 }
 
 #ifdef SERVER
 void
-w_bradnailer_shootnail(void)
+w_bradnailer_shootnail(player pl)
 {
-	player pl = (player)self;
 	static void Nail_Touch(void) {
 		FX_Spark(self.origin, trace_plane_normal);
 		if (other.takedamage == DAMAGE_YES) {
@@ -101,11 +100,11 @@ w_bradnailer_shootnail(void)
 		remove(self);
 	}
 
-	Weapons_MakeVectors();
+	Weapons_MakeVectors(pl);
 	entity nail = spawn();
 	setmodel(nail, "models/nail.mdl");
-	setorigin(nail, Weapons_GetCameraPos() + (v_forward * 16));
-	nail.owner = self;
+	setorigin(nail, Weapons_GetCameraPos(pl) + (v_forward * 16));
+	nail.owner = pl;
 	nail.velocity = v_forward * 2000;
 	nail.movetype = MOVETYPE_FLY;
 	nail.solid = SOLID_BBOX;
@@ -114,7 +113,7 @@ w_bradnailer_shootnail(void)
 	nail.touch = Nail_Touch;
 	setsize(nail, [0,0,0], [0,0,0]);
 
-	if (self.flags & FL_CROUCHING)
+	if (pl.flags & FL_CROUCHING)
 		Animation_PlayerTop(pl, ANIM_SHOOT1HAND, 0.45f);
 	else
 		Animation_PlayerTop(pl, ANIM_CR_SHOOT1HAND, 0.45f);
@@ -124,19 +123,18 @@ w_bradnailer_shootnail(void)
 #endif
 
 void
-w_bradnailer_primary(void)
+w_bradnailer_primary(player pl)
 {
-	player pl = (player)self;
 
 	if (pl.w_attack_next > 0.0) {
 		return;
 	}
 
 #ifdef SERVER
-	w_bradnailer_shootnail();
+	w_bradnailer_shootnail(pl);
 #else
-	Weapons_ViewPunchAngle([-2,0,0]);
-	Weapons_ViewAnimation(BNAIL_SHOOT);
+	Weapons_ViewPunchAngle(pl, [-2,0,0]);
+	Weapons_ViewAnimation(pl, BNAIL_SHOOT);
 #endif
 
 	pl.w_attack_next = 0.3f;
@@ -144,9 +142,8 @@ w_bradnailer_primary(void)
 }
 
 void
-w_bradnailer_secondary(void)
+w_bradnailer_secondary(player pl)
 {
-	player pl = (player)self;
 
 	if (pl.w_attack_next > 0.0) {
 	return;
@@ -155,17 +152,17 @@ w_bradnailer_secondary(void)
 	/* Hack */
 	if (pl.a_ammo3 == 0) {
 		pl.a_ammo3 = 1;
-		Weapons_ViewAnimation(BNAIL_TILT);
+		Weapons_ViewAnimation(pl, BNAIL_TILT);
 		pl.w_attack_next = 0.4f;
 		pl.w_idle_next = pl.w_attack_next;
 		return;
 	}
 
 #ifdef SERVER
-	w_bradnailer_shootnail();
+	w_bradnailer_shootnail(pl);
 #else
-	Weapons_ViewPunchAngle([-2,0,0]);
-	Weapons_ViewAnimation(BNAIL_SHOOT2);
+	Weapons_ViewPunchAngle(pl, [-2,0,0]);
+	Weapons_ViewAnimation(pl, BNAIL_SHOOT2);
 #endif
 
 	pl.w_attack_next = 0.2f;
@@ -174,9 +171,8 @@ w_bradnailer_secondary(void)
 
 
 void
-w_bradnailer_release(void)
+w_bradnailer_release(player pl)
 {
-	player pl = (player)self;
 
 	if (pl.w_idle_next > 0.0) {
 		return;
@@ -184,7 +180,7 @@ w_bradnailer_release(void)
 
 	if (pl.a_ammo3 == 1) {
 		pl.a_ammo3 = 0;
-		Weapons_ViewAnimation(BNAIL_TILTBACK);
+		Weapons_ViewAnimation(pl, BNAIL_TILTBACK);
 		pl.w_attack_next = 0.4f;
 		pl.w_idle_next = pl.w_attack_next;
 		return;
@@ -193,20 +189,20 @@ w_bradnailer_release(void)
 	int r = (float)input_sequence % 3;
 	switch (r) {
 	case 0:
-		Weapons_ViewAnimation(BNAIL_IDLE1);
+		Weapons_ViewAnimation(pl, BNAIL_IDLE1);
 		break;
 	case 1:
-		Weapons_ViewAnimation(BNAIL_IDLE2);
+		Weapons_ViewAnimation(pl, BNAIL_IDLE2);
 		break;
 	case 2:
-		Weapons_ViewAnimation(BNAIL_IDLE3);
+		Weapons_ViewAnimation(pl, BNAIL_IDLE3);
 		break;
 	}
 	pl.w_idle_next = 10.0f;
 }
 
 void
-w_bradnailer_hudpic(int selected, vector pos, float a)
+w_bradnailer_hudpic(player pl, int selected, vector pos, float a)
 {
 #ifdef CLIENT
 	if (selected) {
@@ -247,7 +243,7 @@ weapon_t w_bradnailer =
 	.secondary	= w_bradnailer_secondary,
 	.reload		= __NULL__,
 	.release	= w_bradnailer_release,
-	.crosshair	= __NULL__,
+	.postdraw	= __NULL__,
 	.precache	= w_bradnailer_precache,
 	.pickup		= w_bradnailer_pickup,
 	.updateammo	= w_bradnailer_updateammo,
