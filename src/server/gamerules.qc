@@ -14,6 +14,12 @@
  * OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+bool
+HLGameRules::IsMultiplayer(void)
+{
+	return true;
+}
+
 /* we check what fields have changed over the course of the frame and network
  * only the ones that have actually changed */
 void
