@@ -14,7 +14,7 @@
  * OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-class item_ammo:CBaseEntity
+class item_ammo:NSRenderableEntity
 {
 	void(void) item_ammo;
 	virtual void(void) Respawn;
@@ -66,7 +66,7 @@ item_ammo::item_ammo(void)
 {
 	GetSpawnModel() = model;
 	SetModel(GetSpawnModel());
-	CBaseEntity::CBaseEntity();
+	NSRenderableEntity::NSRenderableEntity();
 }
 
 /*

@@ -45,15 +45,6 @@ Game_Input(player pl)
 			Weapons_AddItem(pl, WEAPON_XS, -1);
 			Weapons_AddItem(pl, WEAPON_SATCHEL, -1);
 		}
-
-		if (pl.impulse == 102) {
-			// Respawn all the entities
-			for (entity a = world; (a = findfloat(a, ::identity, 1));) {
-				CBaseEntity caw = (CBaseEntity)a;
-				caw.Respawn();
-			}
-			bprint(PRINT_HIGH, "Respawning all map entities...\n");
-		}
 	}
 
 	pl.impulse = 0;
