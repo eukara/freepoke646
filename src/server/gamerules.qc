@@ -23,7 +23,7 @@ HLGameRules::IsMultiplayer(void)
 /* we check what fields have changed over the course of the frame and network
  * only the ones that have actually changed */
 void
-HLGameRules::PlayerPostFrame(base_player pp)
+HLGameRules::PlayerPostFrame(NSClientPlayer pp)
 {
 }
 
@@ -39,7 +39,7 @@ HLGameRules::LevelNewParms(void)
 }
 
 void
-HLGameRules::LevelDecodeParms(base_player pp)
+HLGameRules::LevelDecodeParms(NSClientPlayer pp)
 {
 	player pl = (player)pp;
 	g_landmarkpos[0] = parm1;
@@ -76,7 +76,7 @@ HLGameRules::LevelDecodeParms(base_player pp)
 }
 
 void
-HLGameRules::LevelChangeParms(base_player pp)
+HLGameRules::LevelChangeParms(NSClientPlayer pp)
 {
 	player pl = (player)pp;
 	parm1 = g_landmarkpos[0];
@@ -105,13 +105,13 @@ HLGameRules::LevelChangeParms(base_player pp)
 }
 
 void
-HLGameRules::PlayerConnect(base_player pl)
+HLGameRules::PlayerConnect(NSClientPlayer pl)
 {
 	bprint(PRINT_HIGH, sprintf("%s connected\n", pl.netname));
 }
 
 void
-HLGameRules::PlayerDisconnect(base_player pl)
+HLGameRules::PlayerDisconnect(NSClientPlayer pl)
 {
 	bprint(PRINT_HIGH, sprintf("%s disconnected\n", pl.netname));
 
@@ -125,7 +125,7 @@ HLGameRules::PlayerDisconnect(base_player pl)
 }
 
 void
-HLGameRules::PlayerKill(base_player pp)
+HLGameRules::PlayerKill(NSClientPlayer pp)
 {
 	player pl = (player)pp;
 	Damage_Apply(pl, pl, pl.health, WEAPON_NONE, DMG_SKIP_ARMOR);
