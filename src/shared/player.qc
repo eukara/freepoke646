@@ -17,31 +17,15 @@
 /* all potential SendFlags bits we can possibly send */
 enumflags
 {
-	PLAYER_KEEPALIVE,
-	PLAYER_MODELINDEX,
-	PLAYER_ORIGIN,
-	PLAYER_ORIGIN_Z,
-	PLAYER_ANGLES_X,
-	PLAYER_ANGLES_Y,
-	PLAYER_COLORMAP,
-	PLAYER_VELOCITY,
-	PLAYER_VELOCITY_Z,
-	PLAYER_FLAGS,
-	PLAYER_WEAPON,
-	PLAYER_ITEMS,
-	PLAYER_HEALTH,
-	PLAYER_ARMOR,
-	PLAYER_MOVETYPE,
-	PLAYER_VIEWOFS,
-	PLAYER_TOPFRAME,
+	PLAYER_TOPFRAME = PLAYER_CUSTOMFIELDSTART,
 	PLAYER_BOTTOMFRAME,
 	PLAYER_AMMO1,
 	PLAYER_AMMO2,
 	PLAYER_AMMO3,
-	PLAYER_UNUSED1,
-	PLAYER_UNUSED2
+	PLAYER_UNUSED5,
+	PLAYER_UNUSED6,
+	PLAYER_UNUSED7
 };
-
 
 class
 player:NSClientPlayer
@@ -64,6 +48,7 @@ player:NSClientPlayer
 	PREDICTED_INT(ammo_bolts);
 	PREDICTED_INT(ammo_xencandy);
 	PREDICTED_INT(ammo_satchel);
+	PREDICTED_INT(mode_tempstate);
 
 #ifdef CLIENT
 	virtual void(void) draw;
@@ -121,6 +106,7 @@ player::ReceiveEntity(float new, float fl)
 	}
 
 	if (fl & PLAYER_AMMO3) {
+		mode_tempstate = readbyte();
 	}
 
 	setorigin(this, origin);
@@ -139,7 +125,7 @@ player::ReceiveEntity(float new, float fl)
 		HUD_AmmoNotify_Check(this);
 	}
 
-	if (fl & PLAYER_ITEMS || fl & PLAYER_HEALTH || fl & PLAYER_ARMOR)
+	if (fl & PLAYER_ITEMS || fl & PLAYER_HEALTH)
 		HUD_ItemNotify_Check(this);
 }
 
@@ -174,6 +160,7 @@ player::PredictPreFrame(void)
 	SAVE_STATE(ammo_bolts);
 	SAVE_STATE(ammo_xencandy);
 	SAVE_STATE(ammo_satchel);
+	SAVE_STATE(mode_tempstate);
 }
 
 /*
@@ -206,6 +193,7 @@ player::PredictPostFrame(void)
 	ROLL_BACK(ammo_bolts);
 	ROLL_BACK(ammo_xencandy);
 	ROLL_BACK(ammo_satchel);
+	ROLL_BACK(mode_tempstate);
 }
 
 #else
@@ -244,6 +232,9 @@ player::EvaluateEntity(void)
 	if (ATTR_CHANGED(ammo_satchel))
 		SendFlags |= PLAYER_AMMO2;
 
+	if (ATTR_CHANGED(mode_tempstate))
+		SendFlags |= PLAYER_AMMO3;
+
 	SAVE_STATE(anim_top);
 	SAVE_STATE(anim_top_time);
 	SAVE_STATE(anim_top_delay);
@@ -262,6 +253,7 @@ player::EvaluateEntity(void)
 	SAVE_STATE(ammo_bolts);
 	SAVE_STATE(ammo_xencandy);
 	SAVE_STATE(ammo_satchel);
+	SAVE_STATE(mode_tempstate);
 }
 
 /*
@@ -272,20 +264,34 @@ player::SendEntity
 float
 player::SendEntity(entity ePEnt, float fChanged)
 {
+	bool is_spec = false;
+	bool spectarget = false;
+
 	/* don't broadcast invisible players */
 	if (IsFakeSpectator() && ePEnt != this)
 		return (0);
 	if (!GetModelindex() && ePEnt != this)
 		return (0);
 
-	if (ePEnt != self) {
+	/* figure out if we should optimise this player */
+	if (ePEnt.flags & FL_CLIENT && ePEnt != this) {
+		NSClientSpectator sp = (NSClientSpectator)ePEnt;
+		is_spec = (sp.IsFakeSpectator() || sp.IsRealSpectator());
+		spectarget = (is_spec == true && edict_num(sp.spec_ent) == this);
+	}
+
+	/* if we're a spectator of any type and spectate this player */
+	if (ePEnt != this && spectarget == false) {
 		fChanged &= ~PLAYER_ITEMS;
 		fChanged &= ~PLAYER_HEALTH;
-		fChanged &= ~PLAYER_ARMOR;
-		fChanged &= ~PLAYER_VIEWOFS;
+		fChanged &= ~PLAYER_TIMINGS;
 		fChanged &= ~PLAYER_AMMO1;
 		fChanged &= ~PLAYER_AMMO2;
 		fChanged &= ~PLAYER_AMMO3;
+		fChanged &= ~PLAYER_FLAGS;
+		fChanged &= ~PLAYER_PUNCHANGLE;
+		fChanged &= ~PLAYER_VIEWZOOM;
+		fChanged &= ~PLAYER_SPECTATE;
 	}
 
 	WriteByte(MSG_ENTITY, ENT_PLAYER);
@@ -321,6 +327,7 @@ player::SendEntity(entity ePEnt, float fChanged)
 	}
 
 	if (fChanged & PLAYER_AMMO3) {
+		WriteByte(MSG_ENTITY, mode_tempstate);
 	}
 
 	return (1);
