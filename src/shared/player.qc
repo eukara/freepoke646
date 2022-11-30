@@ -30,30 +30,27 @@ enumflags
 class
 player:NSClientPlayer
 {
-	PREDICTED_INT(anim_top);
-	PREDICTED_FLOAT(anim_top_time);
-	PREDICTED_FLOAT(anim_top_delay);
-	PREDICTED_INT(anim_bottom);
-	PREDICTED_FLOAT(anim_bottom_time);
+	PREDICTED_INT(anim_top)
+	PREDICTED_FLOAT(anim_top_time)
+	PREDICTED_FLOAT(anim_top_delay)
+	PREDICTED_INT(anim_bottom)
+	PREDICTED_FLOAT(anim_bottom_time)
 
-	PREDICTED_INT(bradnailer_mag);
-	PREDICTED_INT(nailgun_mag);
-	PREDICTED_INT(shotgun_mag);
-	PREDICTED_INT(cmlwbr_mag);
-	PREDICTED_INT(xs_mag);
-	PREDICTED_INT(satchel_chg);
+	PREDICTED_INT(bradnailer_mag)
+	PREDICTED_INT(nailgun_mag)
+	PREDICTED_INT(shotgun_mag)
+	PREDICTED_INT(cmlwbr_mag)
+	PREDICTED_INT(xs_mag)
+	PREDICTED_INT(satchel_chg)
 
-	PREDICTED_INT(ammo_nail);
-	PREDICTED_INT(ammo_buckshot);
-	PREDICTED_INT(ammo_bolts);
-	PREDICTED_INT(ammo_xencandy);
-	PREDICTED_INT(ammo_satchel);
-	PREDICTED_INT(mode_tempstate);
+	PREDICTED_INT(ammo_nail)
+	PREDICTED_INT(ammo_buckshot)
+	PREDICTED_INT(ammo_bolts)
+	PREDICTED_INT(ammo_xencandy)
+	PREDICTED_INT(ammo_satchel)
+	PREDICTED_INT(mode_tempstate)
 
 #ifdef CLIENT
-	virtual void(void) draw;
-	virtual float() predraw;
-	virtual void(void) postdraw;
 	virtual void(float,float) ReceiveEntity;
 	virtual void(void) PredictPreFrame;
 	virtual void(void) PredictPostFrame;
