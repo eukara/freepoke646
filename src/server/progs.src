@@ -55,7 +55,6 @@
 ../../../valve/src/server/monster_zombie.qc
 
 ../../../valve/src/server/player.qc
-../../../valve/src/server/spectator.qc
 ../../../valve/src/server/items.qc
 ../../../valve/src/server/item_longjump.qc
 ../../../valve/src/server/item_suit.qc
@@ -74,7 +73,6 @@ ammo_p646.qc
 gamerules.qc
 ../../../valve/src/server/gamerules_singleplayer.qc
 ../../../valve/src/server/gamerules_multiplayer.qc
-../../../valve/src/server/client.qc
 ../../../valve/src/server/server.qc
 ../../../base/src/server/damage.qc
 ../../../valve/src/server/flashlight.qc
