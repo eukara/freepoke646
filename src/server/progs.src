@@ -71,7 +71,7 @@ ammo_p646.qc
 ../../../src/botlib/include.src
 
 gamerules.qc
-../../../valve/src/server/gamerules_singleplayer.qc
+gamerules_singleplayer.qc
 ../../../valve/src/server/gamerules_multiplayer.qc
 ../../../valve/src/server/server.qc
 ../../../base/src/server/damage.qc
