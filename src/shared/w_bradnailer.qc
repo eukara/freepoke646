@@ -90,7 +90,7 @@ void
 w_bradnailer_shootnail(player pl)
 {
 	static void Nail_Touch(void) {
-		FX_Spark(self.origin, trace_plane_normal);
+		SurfData_Impact(trace_ent, trace_endpos, trace_plane_normal);
 		if (other.takedamage == DAMAGE_YES) {
 			Damage_Apply(other, self.owner, 15, WEAPON_BRADNAILER, DMG_GENERIC);
 			Sound_Play(self, CHAN_WEAPON, "weapon_bradnailer.hitbody");

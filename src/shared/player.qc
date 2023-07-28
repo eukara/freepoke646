@@ -14,6 +14,8 @@
  * OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include "../../../valve/src/shared/skeleton.h"
+
 /* all potential SendFlags bits we can possibly send */
 enumflags
 {

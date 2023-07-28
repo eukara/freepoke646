@@ -70,6 +70,7 @@ w_pipebomb_precache(void)
 {
 #ifdef SERVER
 	Sound_Precache("weapon_satchel.bounce");
+	Sound_Precache("fx.explosion");
 #endif
 	precache_model("models/w_pipebomb.mdl");
 	precache_model("models/v_pipebomb.mdl");
@@ -131,9 +132,9 @@ s_pipebomb_detonate(entity master)
 	for (entity b = world; (b = find(b, ::classname, "satchel"));) {
 		if (b.owner == master) {
 			float dmg = Skill_GetValue("plr_satchel", 150);
-			FX_Explosion(b.origin);
+			pointparticles(particleeffectnum("fx_explosion.main"), self.origin, [0,0,0], 1);
 			Damage_Radius(b.origin, master, dmg, dmg * 2.5f, TRUE, WEAPON_SATCHEL);
-			sound(b, CHAN_WEAPON, sprintf("weapons/explode%d.wav", floor(random() * 2) + 3), 1, ATTN_NORM);
+			Sound_Play(self, CHAN_VOICE, "fx.explosion");
 			remove(b);
 		}
 	}

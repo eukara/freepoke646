@@ -42,11 +42,6 @@ ClientGame_RendererRestart(string rstr)
 	Damage_Precache();
 
 	FX_Blood_Init();
-	FX_BreakModel_Init();
-	FX_Explosion_Init();
-	FX_GibHuman_Init();
-	FX_Spark_Init();
-	FX_Impact_Init();
 
 	precache_model("sprites/640hud1.spr");
 	precache_model("sprites/640hud2.spr");
